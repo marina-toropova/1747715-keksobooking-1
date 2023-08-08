@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Марина Торопова](https://up.htmlacademy.ru/javascript-individual/1/user/1747715).
-* Наставник: `Неизвестно`.
+* Наставник: [Анастасия Ничипорчук](https://htmlacademy.ru/profile/id612797).
 
 ---
 
