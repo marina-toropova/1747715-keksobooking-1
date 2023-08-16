@@ -5,9 +5,9 @@ const isPallindrom = (string) => {
   string = string.toLowerCase().replaceAll(' ', '');
   for (let i = string.length - 1; i >= 0; i--) {
     reverseString += string[i];
-    console.log(reverseString);
   }
-  const result = (string === reverseString) ? console.log('Это палиндром') : console.log('Это не палиндром');
+  const result = (string === reverseString);
+  console.log(result);
   return result;
 };
 
@@ -40,8 +40,9 @@ const isNumber = (string) => {
     }
   }
 
-  let result = parseFloat(onlyNumbers);
+  const result = Math.round(parseFloat(onlyNumbers));
   console.log(result);
+  return result;
 };
 
 isNumber('2023 год');
@@ -81,7 +82,8 @@ const getAddress = (string, stringLength, symbols) => {
   }
 
   console.log(result);
-}
+  return result;
+};
 
 getAddress('1', 2, '0'); // 01
 getAddress('1', 4, '0'); // 0001
@@ -93,17 +95,18 @@ getAddress('qwerty', 4, '0'); // qwerty
 // Будет использоваться для генерации временных географических координат в следующем задании.
 
 const getRandomNumber = (startNumber, endNumber, simbolsAfterComma) => {
-  let result = (Math.random() * (endNumber - startNumber) + startNumber).toFixed(simbolsAfterComma);
 
   if ((startNumber < 0) || (endNumber < 0)) {
-    result = NaN;
+    return NaN;
   }
 
+  let result = (Math.random() * (endNumber - startNumber) + startNumber).toFixed(simbolsAfterComma);
   if (endNumber <= startNumber) {
     result = (Math.random() * (startNumber - endNumber) + endNumber).toFixed(simbolsAfterComma);
   }
 
   console.log(result);
+  return result;
 }
 
 getRandomNumber(1, 10, 2);
