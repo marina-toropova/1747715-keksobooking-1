@@ -7,26 +7,18 @@ const getRandomInteger = (a, b) => {
   return Math.floor(result);
 };
 
-// Функция для генерации адреса
+// Функция для создания объекта с адресом аватара
 
-const getAvatarAddress = () => {
+const createAuthor = () => {
   let result = getRandomInteger(1, 10);
   if (result < 10) {
     result = `0${ result}`;
   }
   const avatarAddress = `img/avatars/user${result}.png`;
-  return avatarAddress;
-};
-
-getAvatarAddress();
-
-// Функция для создания объекта с автором
-
-const createAuthor = () => {
   return {
-    avatar: getAvatarAddress()
+    avatar: avatarAddress
   };
-}
+};
 
 console.log(
   createAuthor()
