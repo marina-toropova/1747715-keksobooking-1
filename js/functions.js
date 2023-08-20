@@ -7,7 +7,6 @@ const isPallindrom = (string) => {
     reverseString += string[i];
   }
   const result = (string === reverseString);
-  console.log(result);
   return result;
 };
 
@@ -41,7 +40,6 @@ const isNumber = (string) => {
   }
 
   const result = Math.round(parseFloat(onlyNumbers));
-  console.log(result);
   return result;
 };
 
@@ -81,7 +79,6 @@ const getAddress = (string, stringLength, symbols) => {
     result = string;
   }
 
-  console.log(result);
   return result;
 };
 
@@ -105,9 +102,8 @@ const getRandomNumber = (startNumber, endNumber, simbolsAfterComma) => {
     result = (Math.random() * (startNumber - endNumber) + endNumber).toFixed(simbolsAfterComma);
   }
 
-  console.log(result);
   return result;
-}
+};
 
 getRandomNumber(1, 10, 2);
 getRandomNumber(5, 5, 10);
