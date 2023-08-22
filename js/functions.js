@@ -109,3 +109,4 @@ getRandomNumber(1, 10, 2);
 getRandomNumber(5, 5, 10);
 getRandomNumber(5, 1, 10);
 getRandomNumber(-5, 1, 10);
+

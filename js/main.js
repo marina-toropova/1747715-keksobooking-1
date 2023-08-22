@@ -34,7 +34,7 @@ const FEATURES = [
   'conditioner'
 ];
 
-const DESCRIPTION = [
+const DESCRIPTIONS = [
   'Наслаждайтесь закусками и напитками с уникальным видом на Ньюве Виллемшевен и один из крупнейших приливных районов в мире: Вадденское море. Вадден Море особенное в своем роде. Не реже двух раз в день мир там меняется. В один миг вы найдете километры обширных грязевых платформ, а в другой - все под водой.',
   'Это ранее машинный номер, теперь полностью отреставрированный , просторный и полностью оформленный дизайнерский люкс с очень высоким уровнем комфорта.',
   'Красиво переоборудованная лодка 1945 года, расположенная в частном лесу с видом на красивую открытую сельскую местность. Идеальное место для пар, которые хотят отдохнуть, исследовать и посетить местные города. Жилье расположено в 15 минутах езды от Или и в 30 минутах от Кембриджа.',
@@ -55,6 +55,27 @@ const PHOTOS = [
 
 const SIMILAR_ANNOUNCEMENTS_COUNT = 10;
 
+const NUMBER_OF_USERS = 10;
+
+// Функция для генерации широты и долготы
+
+const getGeolocation = (startNumber, endNumber, simbolsAfterComma) => {
+
+  if ((startNumber < 0) || (endNumber < 0)) {
+    return NaN;
+  }
+
+  let result = (Math.random() * (endNumber - startNumber) + startNumber).toFixed(simbolsAfterComma);
+  if (endNumber <= startNumber) {
+    result = (Math.random() * (startNumber - endNumber) + endNumber).toFixed(simbolsAfterComma);
+  }
+
+  return result;
+};
+
+let latitude;
+let longitude;
+
 // Функция для генерации случайного числа из диапазона
 
 const getRandomInteger = (a, b) => {
@@ -73,13 +94,6 @@ const getRandomArrayElement = (elements) => elements[getRandomInteger(0, element
 const getArray = (elements) => {
 
   const result = [];
-  const shuffle = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-  };
-  shuffle(elements);
 
   for (let element of elements) {
     element = getRandomArrayElement(elements);
@@ -91,11 +105,28 @@ const getArray = (elements) => {
   return result;
 };
 
+// Функция для генерации уникального идентификатора
+
+const createRandomIdFromRangeGenerator = (min, max) => {
+  const previousValues = [];
+
+  return function () {
+    let currentValue = getRandomInteger(min, max);
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomInteger(min, max);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
+  };
+};
+
+const generateUserId = createRandomIdFromRangeGenerator(1, NUMBER_OF_USERS);
+
 // Функция для создания объекта с адресом аватара
 
 const createAuthor = () => {
-  let result = getRandomInteger(1, 10);
-  if (result < 10) {
+  let result = generateUserId();
+  if (result < NUMBER_OF_USERS) {
     result = `0${ result}`;
   }
   const avatarAddress = `img/avatars/user${result}.png`;
@@ -107,9 +138,11 @@ const createAuthor = () => {
 // Функция для создания объекта с информацией об объявлении
 
 const createOffer = () => {
+  latitude = getGeolocation(35.65, 35.75, 5);
+  longitude = getGeolocation(139.7, 139.8, 5);
   return {
     title: getRandomArrayElement(TITLES),
-    address: `${getRandomNumber(35.65, 35.75,  5)}, ${getRandomNumber(139.7, 139.8,  5)}`,
+    address: `${latitude}, ${longitude}`,
     price: getRandomInteger(0, 500000),
     type: getRandomArrayElement(TYPES_OF_HOUSING),
     rooms: getRandomInteger(0, 10),
@@ -117,17 +150,15 @@ const createOffer = () => {
     checkin: getRandomArrayElement(CHECKIN_OR_CHECKOUT),
     checkout: getRandomArrayElement(CHECKIN_OR_CHECKOUT),
     features: getArray(FEATURES),
-    description:getRandomArrayElement(DESCRIPTION),
+    description:getRandomArrayElement(DESCRIPTIONS),
     photos: getArray(PHOTOS)
   };
 };
 
-const createLocation = () => {
-  return {
-    lat: getRandomNumber(35.65, 35.75,  5),
-    lng: getRandomNumber(139.7, 139.8,  5)
-  }
-};
+const createLocation = () => ({
+  lat: latitude,
+  lng: longitude
+});
 
 const createAnnouncement = () => ({
   author: createAuthor(),
