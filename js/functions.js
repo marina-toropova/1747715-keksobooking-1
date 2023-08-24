@@ -56,7 +56,7 @@ isNumber(1.5);
 // исходную строку, минимальную длину и строку с добавочными символами — и возвращает исходную строку, дополненную указанными символами до заданной длины.
 // Символы добавляются в начало строки. Если исходная строка превышает заданную длину, она не должна обрезаться. Если «добивка» слишком длинная, она обрезается с конца.
 
-const getAddress = (string, stringLength, symbols) => {
+export const getAddress = (string, stringLength, symbols) => {
   let result = '';
   const symbolsCount = stringLength - string.length; // Количество добивочных символов
   const cutSymbols = symbols.slice(0, symbolsCount);
