@@ -8,16 +8,36 @@ const similarAnnouncement = document.querySelector('#card')
 /* const similarListFragment = document.createDocumentFragment(); */
 
 const offer = createOffer();
-/* const author = createAuthor(); */
+/* const author = createAuthor();
+const announcement = getSimilarAnnouncements(); */
 
 const announcementElement = similarAnnouncement.cloneNode(true);
 announcementElement.querySelector('.popup__title').textContent = offer.title;
 announcementElement.querySelector('.popup__text--address').textContent = offer.address;
-announcementElement.querySelector('.popup__text--price').textContent = `${offer.price} +  ₽/ночь`;
+announcementElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
+
 announcementElement.querySelector('.popup__type').textContent = offer.type;
+
+
 announcementElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
 announcementElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
-announcementElement.querySelector('.popup__features').textContent = offer.features;
+
+/* announcementElement.querySelector('.popup__features').textContent = offer.features; */
+
+const userFeatures = offer.features;
+const featuresContainer = announcementElement.querySelector('.popup__features');
+const featuresList = featuresContainer.querySelectorAll('.popup__feature');
+
+featuresList.forEach((feautureListItem) => {
+  const isNecessary = userFeatures.some(
+    (userFeature) => feautureListItem.classList.contains(`popup__feature--${userFeature}`),
+  );
+
+  if (!isNecessary) {
+    feautureListItem.remove();
+  }
+});
+
 announcementElement.querySelector('.popup__description').textContent = offer.description;
 
 const photos = offer.photos;
@@ -33,7 +53,7 @@ for (let i = 0; i < photos.length; i++) {
   photoContainer.appendChild(photo);
 }
 
-/* announcementElement.querySelector('.popup__avatar').src = author.avatar; */
+/* announcementElement.querySelector('.popup__avatar').src = author.avatar || ''; */
 
 mapCanvas.appendChild(announcementElement);
 
