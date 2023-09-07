@@ -8,21 +8,38 @@ const similarAnnouncement = document.querySelector('#card')
 /* const similarListFragment = document.createDocumentFragment(); */
 
 const offer = createOffer();
-/* const author = createAuthor();
-const announcement = getSimilarAnnouncements(); */
+
+// const author = createAuthor();
+// const announcement = getSimilarAnnouncements();
 
 const announcementElement = similarAnnouncement.cloneNode(true);
 announcementElement.querySelector('.popup__title').textContent = offer.title;
 announcementElement.querySelector('.popup__text--address').textContent = offer.address;
 announcementElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
 
-announcementElement.querySelector('.popup__type').textContent = offer.type;
 
+switch (offer.type) {
+  case 'flat':
+    offer.type = 'Квартира';
+    break;
+  case 'bungalow':
+    offer.type = 'Бунгало';
+    break;
+  case 'house':
+    offer.type = 'Дом';
+    break;
+  case 'palace':
+    offer.type = 'Дворец';
+    break;
+  case 'hotel':
+    offer.type = 'Отель';
+    break;
+}
+announcementElement.querySelector('.popup__type').textContent = offer.type;
 
 announcementElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
 announcementElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
 
-/* announcementElement.querySelector('.popup__features').textContent = offer.features; */
 
 const userFeatures = offer.features;
 const featuresContainer = announcementElement.querySelector('.popup__features');
