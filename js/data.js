@@ -55,7 +55,7 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
 ];
 
-const SIMILAR_ANNOUNCEMENTS_COUNT = 10;
+const SIMILAR_ANNOUNCEMENTS_COUNT = 9;
 
 const NUMBER_OF_USERS = 10;
 
@@ -110,8 +110,5 @@ const createAnnouncement = () => ({
   location: createLocation()
 });
 
-const getSimilarAnnouncements = () => Array.from({length: SIMILAR_ANNOUNCEMENTS_COUNT}, createAnnouncement);
-
-
-export {getSimilarAnnouncements, createOffer, createAuthor};
+export {createOffer, createAuthor, SIMILAR_ANNOUNCEMENTS_COUNT, createAnnouncement};
 

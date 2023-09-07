@@ -53,6 +53,7 @@ const createRandomIdFromRangeGenerator = (min, max) => {
     let currentValue = getRandomInteger(min, max);
     while (previousValues.includes(currentValue)) {
       currentValue = getRandomInteger(min, max);
+      console.log(currentValue);
     }
     previousValues.push(currentValue);
     return currentValue;

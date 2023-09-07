@@ -1,16 +1,11 @@
-import { getSimilarAnnouncements, createOffer, createAuthor } from './data.js';
+import { createOffer, createAuthor, SIMILAR_ANNOUNCEMENTS_COUNT, createAnnouncement } from './data.js';
 
 const mapCanvas = document.querySelector('.map__canvas');
 const similarAnnouncement = document.querySelector('#card')
   .content
   .querySelector('.popup');
 
-/* const similarListFragment = document.createDocumentFragment(); */
-
 const offer = createOffer();
-
-// const author = createAuthor();
-// const announcement = getSimilarAnnouncements();
 
 const announcementElement = similarAnnouncement.cloneNode(true);
 announcementElement.querySelector('.popup__title').textContent = offer.title;
@@ -72,6 +67,10 @@ for (let i = 0; i < photos.length; i++) {
 
 const author = createAuthor();
 announcementElement.querySelector('.popup__avatar').src = author.avatar;
+
+
+const getSimilarAnnouncements = () => Array.from({length: SIMILAR_ANNOUNCEMENTS_COUNT}, createAnnouncement);
+
 
 
 mapCanvas.appendChild(announcementElement);
