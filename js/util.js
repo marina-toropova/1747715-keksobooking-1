@@ -48,13 +48,22 @@ const getArray = (elements) => {
 
 const createRandomIdFromRangeGenerator = (min, max) => {
   const previousValues = [];
+  const allPossibleValues = [];
+
+  for (let i = min; i <= max; i++) {
+    allPossibleValues.push(i);
+  }
 
   return function () {
+    if (previousValues.length === allPossibleValues.length) {
+      return 1;
+    }
+
     let currentValue = getRandomInteger(min, max);
     while (previousValues.includes(currentValue)) {
       currentValue = getRandomInteger(min, max);
-      console.log(currentValue);
     }
+
     previousValues.push(currentValue);
     return currentValue;
   };
