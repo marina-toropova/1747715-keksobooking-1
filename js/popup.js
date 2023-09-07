@@ -71,7 +71,6 @@ for (let i = 0; i < photos.length; i++) {
 }
 
 const author = createAuthor();
-console.log(author);
 announcementElement.querySelector('.popup__avatar').src = author.avatar;
 
 
