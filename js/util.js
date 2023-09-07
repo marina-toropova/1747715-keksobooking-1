@@ -47,24 +47,18 @@ const getArray = (elements) => {
 // Функция для генерации уникального идентификатора
 
 const createRandomIdFromRangeGenerator = (min, max) => {
-  const previousValues = [];
-  const allPossibleValues = [];
-
-  for (let i = min; i <= max; i++) {
-    allPossibleValues.push(i);
-  }
+  const previousValues = new Set();
 
   return function () {
-    if (previousValues.length === allPossibleValues.length) {
-      return 1;
+    if (previousValues.size === max - min + 1) {
+      throw new Error('All possible values have been used.');
     }
 
     let currentValue = getRandomInteger(min, max);
-    while (previousValues.includes(currentValue)) {
+    while (previousValues.has(currentValue)) {
       currentValue = getRandomInteger(min, max);
     }
-
-    previousValues.push(currentValue);
+    previousValues.add(currentValue);
     return currentValue;
   };
 };
