@@ -65,18 +65,10 @@ const renderAnnouncement = () => {
     photoContainer.appendChild(photo);
   }
 
-  const avatar = createAuthor.avatar;
+  const { avatar } = createAuthor();
   announcementElement.querySelector('.popup__avatar').src = avatar;
 
   return mapCanvas.appendChild(announcementElement);
 };
-
-/* const renderAnnouncements = (announcements) => {
-  const picturesListFragment = document.createDocumentFragment();
-  announcements.forEach((announcement) => {
-    picturesListFragment.append(renderAnnouncement(announcement));
-  });
-  mapCanvas.append(picturesListFragment);
-}; */
 
 export { renderAnnouncement };

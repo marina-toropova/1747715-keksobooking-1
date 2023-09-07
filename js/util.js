@@ -1,4 +1,3 @@
-
 // Функция для генерации широты и долготы
 
 const getGeolocation = (startNumber, endNumber, simbolsAfterComma) => {
@@ -47,18 +46,14 @@ const getArray = (elements) => {
 // Функция для генерации уникального идентификатора
 
 const createRandomIdFromRangeGenerator = (min, max) => {
-  const previousValues = new Set();
+  const previousValues = [];
 
   return function () {
-    if (previousValues.size === max - min + 1) {
-      throw new Error('All possible values have been used.');
-    }
-
     let currentValue = getRandomInteger(min, max);
-    while (previousValues.has(currentValue)) {
+    while (previousValues.includes(currentValue)) {
       currentValue = getRandomInteger(min, max);
     }
-    previousValues.add(currentValue);
+    previousValues.push(currentValue);
     return currentValue;
   };
 };
