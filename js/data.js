@@ -74,6 +74,7 @@ const createAuthor = () => {
   };
 };
 
+
 // Функция для создания объекта с информацией об объявлении
 
 let latitude;
@@ -97,6 +98,7 @@ const createOffer = () => {
   };
 };
 
+
 const createLocation = () => ({
   lat: latitude,
   lng: longitude
@@ -109,6 +111,7 @@ const createAnnouncement = () => ({
 });
 
 const getSimilarAnnouncements = () => Array.from({length: SIMILAR_ANNOUNCEMENTS_COUNT}, createAnnouncement);
+
 
 export {getSimilarAnnouncements, createOffer, createAuthor};
 

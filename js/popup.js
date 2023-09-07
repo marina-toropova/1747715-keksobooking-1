@@ -70,7 +70,10 @@ for (let i = 0; i < photos.length; i++) {
   photoContainer.appendChild(photo);
 }
 
-/* announcementElement.querySelector('.popup__avatar').src = author.avatar || ''; */
+const author = createAuthor();
+console.log(author);
+announcementElement.querySelector('.popup__avatar').src = author.avatar;
+
 
 mapCanvas.appendChild(announcementElement);
 
