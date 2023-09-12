@@ -5,17 +5,22 @@ const similarAnnouncement = document.querySelector('#card')
   .content
   .querySelector('.popup');
 const announcementElement = similarAnnouncement.cloneNode(true);
+const propertyType = {
+  flat: 'flat',
+  bungalow: 'bungalow',
+  house: 'house',
+  palace: 'palace',
+  hotel: 'hotel'
+};
 
 // Функция, которая генерирует список всех доступных удобств в объявлении
 
-const getFeatures = () => {
-  const { features } = createOffer();
-  const userFeatures = features;
+const getFeatures = (features) => {
   const featuresContainer = announcementElement.querySelector('.popup__features');
   const featuresList = featuresContainer.querySelectorAll('.popup__feature');
 
   featuresList.forEach((feautureListItem) => {
-    const isNecessary = userFeatures.some(
+    const isNecessary = features.some(
       (userFeature) => feautureListItem.classList.contains(`popup__feature--${userFeature}`),
     );
 
@@ -27,70 +32,54 @@ const getFeatures = () => {
 
 // Функция, которая добавляет фотографии в объявление
 
-const getPhotos = () => {
-  const { photos } = createOffer();
-  const userPhotos = photos;
+const getPhotos = (photos) => {
   const photoContainer = announcementElement.querySelector('.popup__photos');
   photoContainer.innerHTML = '';
 
-  userPhotos.forEach((userPhoto) => {
-    const photo = document.createElement('img');
-    photo.src = userPhoto;
-    photo.classList.add('popup__photo');
-    photo.style.width = '45px';
-    photo.style.height = '40px';
-    photoContainer.appendChild(photo);
+  photos.forEach((photo) => {
+    const image = document.createElement('img');
+    image.src = photo;
+    image.classList.add('popup__photo');
+    image.style.width = '45px';
+    image.style.height = '40px';
+    photoContainer.appendChild(image);
   });
 };
 
 // Функция, которая добавляет тип жилья на страницу
 
-const getProperyType = () => {
-  let { type } = createOffer();
-  const propertyType = {
-    flat: 'flat',
-    bungalow: 'bungalow',
-    house: 'house',
-    palace: 'palace',
-    hotel: 'hotel'
-  };
+const getProperyType = (type) => {
   switch (type) {
     case propertyType.flat:
-      type = 'Квартира';
-      break;
+      return 'Квартира';
     case propertyType.bungalow:
-      type = 'Бунгало';
-      break;
+      return 'Бунгало';
     case propertyType.house:
-      type = 'Дом';
-      break;
+      return 'Дом';
     case propertyType.palace:
-      type = 'Дворец';
-      break;
+      return 'Дворец';
     case propertyType.hotel:
-      type = 'Отель';
-      break;
+      return 'Отель';
+    default:
+      return '';
   }
-
-  announcementElement.querySelector('.popup__type').textContent = type;
 };
 
 // Функция, которая добавляет объявление на страницу
 
 const renderAnnouncement = () => {
-
-  const { title, address, price, rooms, guests, checkin, checkout, description } = createOffer();
+  const { title, address, price, rooms, guests, checkin, checkout, description, type, features, photos } = createOffer();
   const { avatar } = createAuthor();
 
   announcementElement.querySelector('.popup__title').textContent = title; // заголовок
   announcementElement.querySelector('.popup__text--address').textContent = address; // адрес
   announcementElement.querySelector('.popup__text--price').textContent = `${price} ₽/ночь`; // стоимость
-  getProperyType(); // добавляет тип жилья
+  getProperyType(type); // добавляет тип жилья
   announcementElement.querySelector('.popup__text--capacity').textContent = `${rooms} комнаты для ${guests} гостей`; // количество гостей
   announcementElement.querySelector('.popup__text--time').textContent = `Заезд после ${checkin}, выезд до ${checkout}`; // время заезда и выезда
-  getFeatures(); // доступные удобства
+  getFeatures(features); // доступные удобства
   announcementElement.querySelector('.popup__description').textContent = description; // описание
-  getPhotos(); // добавляет фотографии
+  getPhotos(photos); // добавляет фотографии
   announcementElement.querySelector('.popup__avatar').src = avatar; // добавляет аватар
   mapCanvas.appendChild(announcementElement);
 };
