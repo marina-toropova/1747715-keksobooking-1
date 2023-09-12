@@ -1,4 +1,3 @@
-
 // Функция для генерации широты и долготы
 
 const getGeolocation = (startNumber, endNumber, simbolsAfterComma) => {

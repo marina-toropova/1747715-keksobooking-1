@@ -74,6 +74,7 @@ const createAuthor = () => {
   };
 };
 
+
 // Функция для создания объекта с информацией об объявлении
 
 let latitude;
@@ -87,7 +88,7 @@ const createOffer = () => {
     address: `${latitude}, ${longitude}`,
     price: getRandomInteger(0, 500000),
     type: getRandomArrayElement(TYPES_OF_HOUSING),
-    rooms: getRandomInteger(0, 10),
+    rooms: getRandomInteger(1, 10),
     guests: getRandomInteger(0, 25),
     checkin: getRandomArrayElement(CHECKIN_OR_CHECKOUT),
     checkout: getRandomArrayElement(CHECKIN_OR_CHECKOUT),
@@ -96,6 +97,7 @@ const createOffer = () => {
     photos: getArray(PHOTOS)
   };
 };
+
 
 const createLocation = () => ({
   lat: latitude,
@@ -108,6 +110,5 @@ const createAnnouncement = () => ({
   location: createLocation()
 });
 
-const getSimilarAnnouncements = () => Array.from({length: SIMILAR_ANNOUNCEMENTS_COUNT}, createAnnouncement);
+export {createOffer, createAuthor, SIMILAR_ANNOUNCEMENTS_COUNT, createAnnouncement};
 
-export {getSimilarAnnouncements};

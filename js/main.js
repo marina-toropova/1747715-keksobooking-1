@@ -1,7 +1,5 @@
 import './util.js';
-import {getSimilarAnnouncements} from './data.js';
+import './popup.js';
+import { renderAnnouncement } from './popup.js';
 
-console.log(
-  getSimilarAnnouncements()
-);
-
+renderAnnouncement();
