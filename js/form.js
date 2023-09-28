@@ -3,7 +3,7 @@ const mapForm = document.querySelector('.map__filters');
 
 // Функция, которая перводит поля ввода, кнопки и текстовые поля форм в НЕактивное состояние
 
-const setDisabledInput = (form) => {
+const setDisabledFormElements = (form) => {
   const inputs = form.querySelectorAll('input');
   const selects = form.querySelectorAll('select');
   const textareas = form.querySelectorAll('textarea');
@@ -16,7 +16,7 @@ const setDisabledInput = (form) => {
 
 // Функция, которая перводит поля ввода, кнопки и текстовые поля форм в активное состояние
 
-const setEnabledInput = (form) => {
+const setEnabledFormElements = (form) => {
   const inputs = form.querySelectorAll('input');
   const selects = form.querySelectorAll('select');
   const textareas = form.querySelectorAll('textarea');
@@ -29,24 +29,24 @@ const setEnabledInput = (form) => {
 
 // Перевод формы в НЕактивную форму + дезактивация полей
 
-const disableForm = () => {
+const disableForms = () => {
   adForm.classList.add('ad-form--disabled');
   mapForm.classList.add('map__filters--disabled');
 
-  setDisabledInput(adForm);
-  setDisabledInput(mapForm);
+  setDisabledFormElements(adForm);
+  setDisabledFormElements(mapForm);
 };
 
 // Перевод формы в активную форму + активация полей
 
-const enableForm = () => {
+const enableForms = () => {
   adForm.classList.remove('ad-form--disabled');
   mapForm.classList.remove('map__filters--disabled');
 
-  setEnabledInput(adForm);
-  setEnabledInput(mapForm);
+  setEnabledFormElements(adForm);
+  setEnabledFormElements(mapForm);
 };
 
-export { disableForm, enableForm };
+export { disableForms, enableForms };
 
 
