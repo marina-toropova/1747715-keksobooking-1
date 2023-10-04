@@ -13,13 +13,6 @@ const roomOptions = {
   '100': ['не для гостей']
 };
 
-const capacityOptions = {
-  '1': 'для 1 гостя',
-  '2': 'для 2 гостей',
-  '3': 'для 3 гостей',
-  'не для гостей': 'не для гостей'
-};
-
 const typeOfHousingOptions = {
   'bungalow': {
     minPrice: 0,
@@ -87,21 +80,13 @@ pristine.addValidator(roomNumberSelect, validateRoomAndCapacity, () => {
   const capacity = capacitySelect.value;
   let message = '';
   if (rooms === '1') {
-    message = rooms + ' комната не предназначается для ' + capacity + ' гостей';
+    message = `${rooms} комната не предназначается для ${capacity} гостей`;
   } else if (rooms === '2' || rooms === '3') {
-    message = rooms + ' комнаты не предназначаются для ' + capacity + ' гостей';
+    message = `${rooms} комнаты не предназначаются для ${capacity} гостей`;
   } else {
-    message = rooms + ' комнат не для гостей';
+    message = `${rooms} комнат не для гостей`;
   }
   return message;
-});
-
-roomNumberSelect.addEventListener('change', () => {
-  pristine.validate();
-});
-
-capacitySelect.addEventListener('change', () => {
-  pristine.validate();
 });
 
 // Валидация поля типа жилья и цены
@@ -114,14 +99,18 @@ pristine.addValidator(typeOfHousingSelect, validateTypeAndPrice, () => {
 }
 );
 
+roomNumberSelect.addEventListener('change', () => {
+  pristine.validate();
+});
+capacitySelect.addEventListener('change', () => {
+  pristine.validate();
+});
 typeOfHousingSelect.addEventListener('change', () => {
   pristine.validate();
 });
-
 priceInput.addEventListener('change', () => {
   pristine.validate();
 });
-
 timeInSelect.addEventListener('change', setTime);
 timeOutSelect.addEventListener('change', setTime);
 
@@ -129,9 +118,8 @@ const validateForms = () => {
 
   form.addEventListener('submit', (evt) => {
     const isValid = pristine.validate();
-    evt.preventDefault();
-    if (isValid) {
-      const valid = pristine.validate();
+    if (!isValid) {
+      evt.preventDefault();
     }
   });
 };
