@@ -13,6 +13,12 @@ const roomOptions = {
   '100': ['не для гостей']
 };
 
+const times = {
+  '12:00': '12:00',
+  '13:00': '13:00',
+  '14:00': '14:00',
+};
+
 const typeOfHousingOptions = {
   'bungalow': {
     minPrice: 0,
@@ -39,11 +45,6 @@ const typeOfHousingOptions = {
 // Функция, которая синхронизирует время заезда и выезда
 
 const setTime = () => {
-  const times = {
-    '12:00': '12:00',
-    '13:00': '13:00',
-    '14:00': '14:00',
-  };
   const timeIn = timeInSelect.value;
   timeOutSelect.value = times[timeIn];
 };
@@ -79,9 +80,9 @@ pristine.addValidator(roomNumberSelect, validateRoomAndCapacity, () => {
   const rooms = roomNumberSelect.value;
   const capacity = capacitySelect.value;
   let message = '';
-  if (rooms === '1') {
+  if (roomOptions['1'].includes(rooms)) {
     message = `${rooms} комната не предназначается для ${capacity} гостей`;
-  } else if (rooms === '2' || rooms === '3') {
+  } else if (roomOptions['2'].includes(rooms)) {
     message = `${rooms} комнаты не предназначаются для ${capacity} гостей`;
   } else {
     message = `${rooms} комнат не для гостей`;
