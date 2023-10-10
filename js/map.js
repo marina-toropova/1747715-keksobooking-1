@@ -11,9 +11,9 @@ const map = L.map('map-canvas')
     enableForms();
   })
   .setView({
-    lat: 35.75097,
+    lat: 35.75090,
     lng: 139.75845,
-  }, 11);
+  }, 12);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
