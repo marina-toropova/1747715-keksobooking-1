@@ -1,6 +1,3 @@
-import { createOffer, createAuthor } from './data.js';
-
-const mapCanvas = document.querySelector('.map__canvas');
 const similarAnnouncement = document.querySelector('#card')
   .content
   .querySelector('.popup');
@@ -67,21 +64,20 @@ const getProperyType = (type) => {
 
 // Функция, которая добавляет объявление на страницу
 
-const renderAnnouncement = () => {
-  const { title, address, price, rooms, guests, checkin, checkout, description, type, features, photos } = createOffer();
-  const { avatar } = createAuthor();
+const renderAnnouncement = ({author, offer}) => {
 
-  announcementElement.querySelector('.popup__title').textContent = title; // заголовок
-  announcementElement.querySelector('.popup__text--address').textContent = address; // адрес
-  announcementElement.querySelector('.popup__text--price').textContent = `${price} ₽/ночь`; // стоимость
-  getProperyType(type); // добавляет тип жилья
-  announcementElement.querySelector('.popup__text--capacity').textContent = `${rooms} комнаты для ${guests} гостей`; // количество гостей
-  announcementElement.querySelector('.popup__text--time').textContent = `Заезд после ${checkin}, выезд до ${checkout}`; // время заезда и выезда
-  getFeatures(features); // доступные удобства
-  announcementElement.querySelector('.popup__description').textContent = description; // описание
-  getPhotos(photos); // добавляет фотографии
-  announcementElement.querySelector('.popup__avatar').src = avatar; // добавляет аватар
-  mapCanvas.appendChild(announcementElement);
+  announcementElement.querySelector('.popup__title').textContent = offer.title; // заголовок
+  announcementElement.querySelector('.popup__text--address').textContent = offer.address; // адрес
+  announcementElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`; // стоимость
+  getProperyType(offer.type); // добавляет тип жилья
+  announcementElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`; // количество гостей
+  announcementElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`; // время заезда и выезда
+  getFeatures(offer.features); // доступные удобства
+  announcementElement.querySelector('.popup__description').textContent = offer.description; // описание
+  getPhotos(offer.photos); // добавляет фотографии
+  announcementElement.querySelector('.popup__avatar').src = author.avatar; // добавляет аватар
+
+  return announcementElement;
 };
 
 export { renderAnnouncement };

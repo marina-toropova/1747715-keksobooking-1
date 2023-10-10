@@ -110,5 +110,7 @@ const createAnnouncement = () => ({
   location: createLocation()
 });
 
-export {createOffer, createAuthor, SIMILAR_ANNOUNCEMENTS_COUNT, createAnnouncement};
+const similarAnnouncements = Array.from({length: SIMILAR_ANNOUNCEMENTS_COUNT}, createAnnouncement);
+
+export {createOffer, createAuthor, SIMILAR_ANNOUNCEMENTS_COUNT, createAnnouncement, similarAnnouncements};
 

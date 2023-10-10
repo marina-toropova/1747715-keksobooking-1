@@ -1,11 +1,9 @@
 import './util.js';
 import './popup.js';
-import { renderAnnouncement } from './popup.js';
-import { enableForms } from './form.js';
+import { disableForms } from './form.js';
 import { validateForms, setTime } from './validator.js';
+import { map } from './map.js';
 
-renderAnnouncement();
-enableForms();
+/* disableForms(); */
 validateForms();
 setTime();
-
