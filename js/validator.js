@@ -96,7 +96,7 @@ pristine.addValidator(typeOfHousingSelect, validateTypeAndPrice, () => {
   const typeOfHousing = typeOfHousingSelect.value;
   const minPrice = typeOfHousingOptions[typeOfHousing].minPrice;
   priceInput.min = minPrice;
-  return `Установите цену не ниже ${typeOfHousingOptions[typeOfHousing].minPrice}`;
+  return `Установите цену не ниже ${minPrice}`;
 }
 );
 
@@ -126,4 +126,4 @@ const validateForms = () => {
 };
 
 
-export { validateForms, setTime };
+export { validateForms, setTime, priceInput, typeOfHousingSelect, typeOfHousingOptions};

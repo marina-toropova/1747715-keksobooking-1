@@ -65,6 +65,5 @@ similarAnnouncements.forEach(({author, offer, location}) => {
     .bindPopup(renderAnnouncement({author, offer}));
 });
 
-console.log(similarAnnouncements);
 
 export { map };
