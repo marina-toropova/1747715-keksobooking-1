@@ -1,3 +1,5 @@
+import { sliderElement } from './slider.js';
+
 const adForm = document.querySelector('.ad-form');
 const mapForm = document.querySelector('.map__filters');
 
@@ -12,6 +14,7 @@ const setDisabledFormElements = (form) => {
   [...inputs, ...selects, ...textareas, ...buttons].forEach((element) => {
     element.disabled = true;
   });
+  sliderElement.setAttribute('disabled', true);
 };
 
 // Функция, которая перводит поля ввода, кнопки и текстовые поля форм в активное состояние
@@ -25,6 +28,7 @@ const setEnabledFormElements = (form) => {
   [...inputs, ...selects, ...textareas, ...buttons].forEach((element) => {
     element.disabled = false;
   });
+  sliderElement.removeAttribute('disabled', true);
 };
 
 // Перевод формы в НЕактивную форму + дезактивация полей
