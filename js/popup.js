@@ -1,7 +1,3 @@
-const similarAnnouncement = document.querySelector('#card')
-  .content
-  .querySelector('.popup');
-const announcementElement = similarAnnouncement.cloneNode(true);
 const propertyType = {
   flat: 'flat',
   bungalow: 'bungalow',
@@ -12,7 +8,7 @@ const propertyType = {
 
 // Функция, которая генерирует список всех доступных удобств в объявлении
 
-const getFeatures = (features) => {
+const getFeatures = (features = [], announcementElement) => {
   const featuresContainer = announcementElement.querySelector('.popup__features');
   const featuresList = featuresContainer.querySelectorAll('.popup__feature');
 
@@ -29,7 +25,7 @@ const getFeatures = (features) => {
 
 // Функция, которая добавляет фотографии в объявление
 
-const getPhotos = (photos) => {
+const getPhotos = (photos = [], announcementElement) => {
   const photoContainer = announcementElement.querySelector('.popup__photos');
   photoContainer.innerHTML = '';
 
@@ -62,22 +58,29 @@ const getProperyType = (type) => {
   }
 };
 
-// Функция, которая добавляет объявление на страницу
+// Функция, которая заполняет объявление
 
-const renderAnnouncement = ({author, offer}) => {
+const renderAnnouncement = (similarAnnouncements) => {
+  const announcements = [];
 
-  announcementElement.querySelector('.popup__title').textContent = offer.title; // заголовок
-  announcementElement.querySelector('.popup__text--address').textContent = offer.address; // адрес
-  announcementElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`; // стоимость
-  getProperyType(offer.type); // добавляет тип жилья
-  announcementElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`; // количество гостей
-  announcementElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`; // время заезда и выезда
-  getFeatures(offer.features); // доступные удобства
-  announcementElement.querySelector('.popup__description').textContent = offer.description; // описание
-  getPhotos(offer.photos); // добавляет фотографии
-  announcementElement.querySelector('.popup__avatar').src = author.avatar; // добавляет аватар
+  similarAnnouncements.forEach(({ author, offer }) => {
+    const similarAnnouncement = document.querySelector('#card').content.querySelector('.popup');
+    const announcementElement = similarAnnouncement.cloneNode(true);
+    announcementElement.querySelector('.popup__title').textContent = offer.title;
+    announcementElement.querySelector('.popup__text--address').textContent = offer.address;
+    announcementElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
+    announcementElement.querySelector('.popup__type').textContent = getProperyType(offer.type);
+    announcementElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
+    announcementElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
+    getFeatures(offer.features, announcementElement);
+    announcementElement.querySelector('.popup__description').textContent = offer.description;
+    getPhotos(offer.photos, announcementElement);
+    announcementElement.querySelector('.popup__avatar').src = author.avatar;
 
-  return announcementElement;
+    announcements.push(announcementElement);
+  });
+
+  return announcements;
 };
 
 export { renderAnnouncement };

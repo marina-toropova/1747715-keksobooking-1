@@ -1,5 +1,4 @@
 import { enableForms } from './form.js';
-import { similarAnnouncements } from './data.js';
 import { renderAnnouncement } from './popup.js';
 
 const map = L.map('map-canvas');
@@ -52,19 +51,27 @@ const loadMap = () => {
   });
 };
 
-similarAnnouncements.forEach(({author, offer, location}) => {
-  const marker = L.marker({
-    lat: location.lat,
-    lng: location.lng,
-  },
-  {
-    commonPinIcon
-  }
-  );
+fetch('https://28.javascript.pages.academy/keksobooking/data')
+  .then((response) => response.json())
+  .then((similarAnnouncements) => {
+    similarAnnouncements.forEach(({ location }, index) => {
+      const marker = L.marker({
+        lat: location.lat,
+        lng: location.lng,
+      },
+      {
+        commonPinIcon
+      });
 
-  marker
-    .addTo(map)
-    .bindPopup(renderAnnouncement({author, offer}));
-});
+      const announcementElements = renderAnnouncement(similarAnnouncements);
+      const announcementElement = announcementElements[index];
+      const popup = L.popup()
+        .setContent(announcementElement);
+
+      marker
+        .addTo(map)
+        .bindPopup(popup);
+    });
+  });
 
 export { loadMap };
