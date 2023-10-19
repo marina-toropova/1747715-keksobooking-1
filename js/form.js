@@ -33,7 +33,7 @@ const setEnabledFormElements = (form) => {
 
 // Перевод формы в НЕактивную форму + дезактивация полей
 
-const disableForms = () => {
+const disableFilter = () => {
   adForm.classList.add('ad-form--disabled');
   mapForm.classList.add('map__filters--disabled');
 
@@ -41,16 +41,27 @@ const disableForms = () => {
   setDisabledFormElements(mapForm);
 };
 
+// Перевод фильтров в НЕактивное состояние
+
+const disableForm = () => {
+  adForm.classList.add('ad-form--disabled');
+  setDisabledFormElements(adForm);
+};
+
 // Перевод формы в активную форму + активация полей
 
-const enableForms = () => {
-  adForm.classList.remove('ad-form--disabled');
+const enableFilter = () => {
   mapForm.classList.remove('map__filters--disabled');
-
-  setEnabledFormElements(adForm);
   setEnabledFormElements(mapForm);
 };
 
-export { disableForms, enableForms };
+// Перевод фильтров в активное состояние
+
+const enableForm = () => {
+  adForm.classList.remove('ad-form--disabled');
+  setEnabledFormElements(adForm);
+};
+
+export { disableForm, enableForm, disableFilter, enableFilter };
 
 

@@ -1,6 +1,7 @@
-import { enableForms } from './form.js';
+import { enableForm, enableFilter } from './form.js';
 import { renderAnnouncement } from './popup.js';
 import { getData } from './api.js';
+import { showAlert } from './util.js';
 
 const map = L.map('map-canvas');
 
@@ -31,7 +32,7 @@ addressInput.value = 'LatLng(35.68700, 139.753475)';
 
 const loadMap = () => {
   map.on('load', () => {
-    enableForms();
+    enableForm();
   })
     .setView({
       lat: 35.68700,
@@ -52,8 +53,9 @@ const loadMap = () => {
   });
 };
 
-getData()
-  .then((similarAnnouncements) => {
+const loadData = () => {
+  getData()
+    .then((similarAnnouncements) => {
     similarAnnouncements.forEach(({ location }, index) => {
       const marker = L.marker({
         lat: location.lat,
@@ -72,6 +74,10 @@ getData()
         .addTo(map)
         .bindPopup(popup);
     });
-  });
+    }).then(enableFilter())
+    .catch((err) => {
+      showAlert(err.message);
+    });
+};
 
-export { loadMap };
+export { loadMap, loadData };

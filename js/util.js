@@ -76,7 +76,11 @@ const showAlert = (message) => {
 
   alertContainer.textContent = message;
 
-  document.body.append(alertContainer);
+  document.body.appendChild(alertContainer);
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
 
   setTimeout(() => {
     alertContainer.remove();

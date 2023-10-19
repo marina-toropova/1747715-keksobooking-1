@@ -1,6 +1,5 @@
 import { showAlert } from './util.js';
 import { sendData } from './api.js';
-import { showSuccessMessage } from './success-message.js';
 
 const form = document.querySelector('.ad-form');
 const roomNumberSelect = form.querySelector('#room_number');

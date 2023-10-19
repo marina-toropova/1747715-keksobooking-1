@@ -1,6 +1,6 @@
 const templateSuccessMessage = document.querySelector('#success').content.querySelector('.success');
 const successMessage = templateSuccessMessage.cloneNode(true);
-const body = document.querySelector('body');
+/* const body = document.querySelector('body'); */
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const hideSuccessMessage = () => {
@@ -8,7 +8,7 @@ const hideSuccessMessage = () => {
 };
 
 const showSuccessMessage = () => {
-  body.appendChild(successMessage);
+  document.body.append(successMessage);
 
   window.addEventListener('keydown', (evt) => {
     if (isEscapeKey(evt)) {
