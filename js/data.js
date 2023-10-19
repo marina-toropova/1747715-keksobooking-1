@@ -113,5 +113,5 @@ const createAnnouncement = () => ({
 
 const similarAnnouncements = Array.from({length: SIMILAR_ANNOUNCEMENTS_COUNT}, createAnnouncement);
 
-export {createOffer, createAuthor, SIMILAR_ANNOUNCEMENTS_COUNT, createAnnouncement, similarAnnouncements, ALERT_SHOW_TIME};
+export {createOffer, createAuthor, SIMILAR_ANNOUNCEMENTS_COUNT, createAnnouncement, similarAnnouncements };
 
