@@ -1,9 +1,10 @@
-import { enableForm, enableFilter } from './form.js';
+import { enableForm, enableFilter, disableFilter } from './form.js';
 import { renderAnnouncement } from './popup.js';
 import { getData } from './api.js';
 import { showAlert } from './util.js';
 
 const map = L.map('map-canvas');
+const addressInput = document.querySelector('#address');
 
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
@@ -26,9 +27,7 @@ const commonPinIcon = L.icon({
   iconSize: [40, 40]
 });
 
-const addressInput = document.querySelector('#address');
-
-addressInput.value = 'LatLng(35.68700, 139.753475)';
+addressInput.value = mainPinMarker.getLatLng();
 
 const loadMap = () => {
   map.on('load', () => {
@@ -56,28 +55,30 @@ const loadMap = () => {
 const loadData = () => {
   getData()
     .then((similarAnnouncements) => {
-    similarAnnouncements.forEach(({ location }, index) => {
-      const marker = L.marker({
-        lat: location.lat,
-        lng: location.lng,
-      },
-      {
-        commonPinIcon
+      similarAnnouncements.forEach(({ location }, index) => {
+        const marker = L.marker({
+          lat: location.lat,
+          lng: location.lng,
+        },
+        {
+          commonPinIcon
+        });
+
+        const announcementElements = renderAnnouncement(similarAnnouncements);
+        const announcementElement = announcementElements[index];
+        const popup = L.popup()
+          .setContent(announcementElement);
+
+        marker
+          .addTo(map)
+          .bindPopup(popup);
       });
-
-      const announcementElements = renderAnnouncement(similarAnnouncements);
-      const announcementElement = announcementElements[index];
-      const popup = L.popup()
-        .setContent(announcementElement);
-
-      marker
-        .addTo(map)
-        .bindPopup(popup);
-    });
-    }).then(enableFilter())
+    })
+    .then(enableFilter())
     .catch((err) => {
+      disableFilter();
       showAlert(err.message);
     });
 };
 
-export { loadMap, loadData };
+export { loadMap, loadData, mainPinMarker, addressInput, map };

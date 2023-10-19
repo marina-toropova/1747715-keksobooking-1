@@ -34,10 +34,7 @@ const setEnabledFormElements = (form) => {
 // Перевод формы в НЕактивную форму + дезактивация полей
 
 const disableFilter = () => {
-  adForm.classList.add('ad-form--disabled');
   mapForm.classList.add('map__filters--disabled');
-
-  setDisabledFormElements(adForm);
   setDisabledFormElements(mapForm);
 };
 
