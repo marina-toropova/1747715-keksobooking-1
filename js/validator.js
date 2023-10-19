@@ -1,3 +1,7 @@
+import { showAlert } from './util.js';
+import { sendData } from './api.js';
+import { showSuccessMessage } from './success-message.js';
+
 const form = document.querySelector('.ad-form');
 const roomNumberSelect = form.querySelector('#room_number');
 const capacitySelect = form.querySelector('#capacity');
@@ -115,15 +119,21 @@ priceInput.addEventListener('change', () => {
 timeInSelect.addEventListener('change', setTime);
 timeOutSelect.addEventListener('change', setTime);
 
-const validateForms = () => {
+const validateForms = (onSuccess) => {
 
   form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
     const isValid = pristine.validate();
-    if (!isValid) {
-      evt.preventDefault();
+    if (isValid) {
+      sendData(new FormData(evt.target))
+        .then(onSuccess)
+        .catch((err) => {
+          showAlert(err.message);
+        });
     }
   });
 };
 
 
-export { validateForms, setTime, priceInput, typeOfHousingSelect, typeOfHousingOptions};
+export { validateForms, setTime, priceInput, typeOfHousingSelect, typeOfHousingOptions };

@@ -1,5 +1,6 @@
 import { enableForms } from './form.js';
 import { renderAnnouncement } from './popup.js';
+import { getData } from './api.js';
 
 const map = L.map('map-canvas');
 
@@ -10,8 +11,8 @@ const mainPinIcon = L.icon({
 
 const mainPinMarker = L.marker(
   {
-    lat: 35.75097,
-    lng: 139.75845,
+    lat: 35.68700,
+    lng: 139.753475,
   },
   {
     draggable: true,
@@ -26,16 +27,16 @@ const commonPinIcon = L.icon({
 
 const addressInput = document.querySelector('#address');
 
-addressInput.value = 'LatLng(35.75097, 139.75845)';
+addressInput.value = 'LatLng(35.68700, 139.753475)';
 
 const loadMap = () => {
   map.on('load', () => {
     enableForms();
   })
     .setView({
-      lat: 35.75090,
-      lng: 139.75845,
-    }, 12);
+      lat: 35.68700,
+      lng: 139.753490,
+    }, 14);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -51,8 +52,7 @@ const loadMap = () => {
   });
 };
 
-fetch('https://28.javascript.pages.academy/keksobooking/data')
-  .then((response) => response.json())
+getData()
   .then((similarAnnouncements) => {
     similarAnnouncements.forEach(({ location }, index) => {
       const marker = L.marker({

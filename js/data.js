@@ -61,6 +61,7 @@ const NUMBER_OF_USERS = 10;
 
 const generateUserId = createRandomIdFromRangeGenerator(1, NUMBER_OF_USERS);
 
+
 // Функция для создания объекта с адресом аватара
 
 const createAuthor = () => {
@@ -112,5 +113,5 @@ const createAnnouncement = () => ({
 
 const similarAnnouncements = Array.from({length: SIMILAR_ANNOUNCEMENTS_COUNT}, createAnnouncement);
 
-export {createOffer, createAuthor, SIMILAR_ANNOUNCEMENTS_COUNT, createAnnouncement, similarAnnouncements};
+export {createOffer, createAuthor, SIMILAR_ANNOUNCEMENTS_COUNT, createAnnouncement, similarAnnouncements, ALERT_SHOW_TIME};
 

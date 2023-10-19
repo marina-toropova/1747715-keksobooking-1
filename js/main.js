@@ -3,15 +3,10 @@ import './popup.js';
 import { disableForms } from './form.js';
 import { validateForms, setTime } from './validator.js';
 import { loadMap } from './map.js';
-import { createLoader } from './get-data.js';
-
-const loadAnimals = createLoader(console.log, console.error);
-
-loadAnimals();
+import { showSuccessMessage } from './success-message.js';
 
 disableForms();
-validateForms();
+validateForms('Данные успешно отправлены');
 setTime();
 loadMap();
-
-
+validateForms(showSuccessMessage);
