@@ -1,6 +1,6 @@
 import { showErrorMessage } from './messages.js';
 import { sendData } from './api.js';
-import { mainPinMarker, map } from './map.js';
+import { setLatLng, map } from './map.js';
 
 const form = document.querySelector('.ad-form');
 const filters = document.querySelector('.map__filters');
@@ -12,7 +12,6 @@ const timeInSelect = document.querySelector('#timein');
 const timeOutSelect = document.querySelector('#timeout');
 const submitButton = form.querySelector('.ad-form__submit');
 const resetButton = form.querySelector('.ad-form__reset');
-const addressInput = document.querySelector('#address');
 
 const roomOptions = {
   '1': ['1'],
@@ -99,12 +98,8 @@ const unblockSubmitButton = () => {
 const resetForms = () => {
   form.reset();
   filters.reset();
-  mainPinMarker.setLatLng({
-    lat: 35.68700,
-    lng: 139.753475,
-  });
   map.closePopup();
-  addressInput.value = mainPinMarker.getLatLng();
+  setLatLng();
 };
 
 // Валидация полей количества комнат и количества мест

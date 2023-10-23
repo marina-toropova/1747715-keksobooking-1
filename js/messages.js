@@ -8,28 +8,34 @@ const closeErrorMessageButton = errorMessage.querySelector('.error__button');
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const hideMessage = (message) => {
-  message.classList.add('hidden');
+const onDocumentKeydownEscape = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    hideMessage();
+  }
 };
 
-const showMessage = (message, hideFunction) => {
+const onDocumentClick = (evt) => {
+  evt.preventDefault();
+  hideMessage();
+};
+
+function hideMessage (message) {
+  message.classList.add('hidden');
+  document.removeEventListener('click', onDocumentClick);
+  document.removeEventListener('keydown', onDocumentKeydownEscape);
+}
+
+const showMessage = (message, keydownCallback) => {
   document.body.append(message);
 
-  window.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
-      evt.preventDefault();
-      hideFunction();
-    }
-  });
-
-  window.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    hideFunction();
-  });
+  document.addEventListener('keydown', keydownCallback);
+  document.addEventListener('click', keydownCallback);
 };
 
 const hideErrorMessage = () => {
   hideMessage(errorMessage);
+  closeErrorMessageButton.removeEventListener('click', hideErrorMessage);
 };
 
 const hideSuccessMessage = () => {

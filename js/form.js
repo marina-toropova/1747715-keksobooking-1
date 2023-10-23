@@ -31,14 +31,14 @@ const setEnabledFormElements = (form) => {
   sliderElement.removeAttribute('disabled', true);
 };
 
-// Перевод формы в НЕактивную форму + дезактивация полей
+// Перевод фильтров в НЕактивное состояние
 
 const disableFilter = () => {
   mapForm.classList.add('map__filters--disabled');
   setDisabledFormElements(mapForm);
 };
 
-// Перевод фильтров в НЕактивное состояние
+// Перевод формы в НЕактивную форму + дезактивация полей
 
 const disableForm = () => {
   adForm.classList.add('ad-form--disabled');

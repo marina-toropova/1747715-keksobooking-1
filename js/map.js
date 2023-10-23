@@ -5,6 +5,9 @@ import { showAlert } from './util.js';
 
 const map = L.map('map-canvas');
 const addressInput = document.querySelector('#address');
+const defaultLatitude = 35.68700;
+const defaultLongitude = 139.753475;
+const setViewLongitude = 139.753490;
 
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
@@ -13,8 +16,8 @@ const mainPinIcon = L.icon({
 
 const mainPinMarker = L.marker(
   {
-    lat: 35.68700,
-    lng: 139.753475,
+    lat: defaultLatitude,
+    lng: defaultLongitude,
   },
   {
     draggable: true,
@@ -29,13 +32,21 @@ const commonPinIcon = L.icon({
 
 addressInput.value = mainPinMarker.getLatLng();
 
+const setLatLng = () => {
+  mainPinMarker.setLatLng({
+    lat: defaultLatitude,
+    lng: defaultLongitude,
+  });
+  addressInput.value = mainPinMarker.getLatLng();
+};
+
 const loadMap = () => {
   map.on('load', () => {
     enableForm();
   })
     .setView({
-      lat: 35.68700,
-      lng: 139.753490,
+      lat: defaultLatitude,
+      lng: setViewLongitude,
     }, 14);
 
   L.tileLayer(
@@ -81,4 +92,4 @@ const loadData = () => {
     });
 };
 
-export { loadMap, loadData, mainPinMarker, addressInput, map };
+export { loadMap, loadData, setLatLng, addressInput, map };
