@@ -31,26 +31,34 @@ const setEnabledFormElements = (form) => {
   sliderElement.removeAttribute('disabled', true);
 };
 
+// Перевод фильтров в НЕактивное состояние
+
+const disableFilter = () => {
+  mapForm.classList.add('map__filters--disabled');
+  setDisabledFormElements(mapForm);
+};
+
 // Перевод формы в НЕактивную форму + дезактивация полей
 
-const disableForms = () => {
+const disableForm = () => {
   adForm.classList.add('ad-form--disabled');
-  mapForm.classList.add('map__filters--disabled');
-
   setDisabledFormElements(adForm);
-  setDisabledFormElements(mapForm);
 };
 
 // Перевод формы в активную форму + активация полей
 
-const enableForms = () => {
-  adForm.classList.remove('ad-form--disabled');
+const enableFilter = () => {
   mapForm.classList.remove('map__filters--disabled');
-
-  setEnabledFormElements(adForm);
   setEnabledFormElements(mapForm);
 };
 
-export { disableForms, enableForms };
+// Перевод фильтров в активное состояние
+
+const enableForm = () => {
+  adForm.classList.remove('ad-form--disabled');
+  setEnabledFormElements(adForm);
+};
+
+export { disableForm, enableForm, disableFilter, enableFilter };
 
 

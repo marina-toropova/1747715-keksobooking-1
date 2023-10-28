@@ -1,8 +1,13 @@
-import { enableForms } from './form.js';
-import { similarAnnouncements } from './data.js';
+import { enableForm, enableFilter, disableFilter } from './form.js';
 import { renderAnnouncement } from './popup.js';
+import { getData } from './api.js';
+import { showAlert } from './util.js';
 
 const map = L.map('map-canvas');
+const addressInput = document.querySelector('#address');
+const defaultLatitude = 35.68700;
+const defaultLongitude = 139.753475;
+const setViewLongitude = 139.753490;
 
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
@@ -11,8 +16,8 @@ const mainPinIcon = L.icon({
 
 const mainPinMarker = L.marker(
   {
-    lat: 35.75097,
-    lng: 139.75845,
+    lat: defaultLatitude,
+    lng: defaultLongitude,
   },
   {
     draggable: true,
@@ -25,18 +30,24 @@ const commonPinIcon = L.icon({
   iconSize: [40, 40]
 });
 
-const addressInput = document.querySelector('#address');
+addressInput.value = mainPinMarker.getLatLng();
 
-addressInput.value = 'LatLng(35.75097, 139.75845)';
+const setLatLng = () => {
+  mainPinMarker.setLatLng({
+    lat: defaultLatitude,
+    lng: defaultLongitude,
+  });
+  addressInput.value = mainPinMarker.getLatLng();
+};
 
 const loadMap = () => {
   map.on('load', () => {
-    enableForms();
+    enableForm();
   })
     .setView({
-      lat: 35.75090,
-      lng: 139.75845,
-    }, 12);
+      lat: defaultLatitude,
+      lng: setViewLongitude,
+    }, 14);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -52,19 +63,33 @@ const loadMap = () => {
   });
 };
 
-similarAnnouncements.forEach(({author, offer, location}) => {
-  const marker = L.marker({
-    lat: location.lat,
-    lng: location.lng,
-  },
-  {
-    commonPinIcon
-  }
-  );
+const loadData = () => {
+  getData()
+    .then((similarAnnouncements) => {
+      similarAnnouncements.forEach(({ location }, index) => {
+        const marker = L.marker({
+          lat: location.lat,
+          lng: location.lng,
+        },
+        {
+          commonPinIcon
+        });
 
-  marker
-    .addTo(map)
-    .bindPopup(renderAnnouncement({author, offer}));
-});
+        const announcementElements = renderAnnouncement(similarAnnouncements);
+        const announcementElement = announcementElements[index];
+        const popup = L.popup()
+          .setContent(announcementElement);
 
-export { loadMap };
+        marker
+          .addTo(map)
+          .bindPopup(popup);
+      });
+    })
+    .then(enableFilter())
+    .catch((err) => {
+      disableFilter();
+      showAlert(err.message);
+    });
+};
+
+export { loadMap, loadData, setLatLng, addressInput, map };

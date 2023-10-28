@@ -1,10 +1,17 @@
+import { showErrorMessage } from './messages.js';
+import { sendData } from './api.js';
+import { setLatLng, map } from './map.js';
+
 const form = document.querySelector('.ad-form');
+const filters = document.querySelector('.map__filters');
 const roomNumberSelect = form.querySelector('#room_number');
 const capacitySelect = form.querySelector('#capacity');
 const typeOfHousingSelect = form.querySelector('#type');
 const priceInput = form.querySelector('#price');
 const timeInSelect = document.querySelector('#timein');
 const timeOutSelect = document.querySelector('#timeout');
+const submitButton = form.querySelector('.ad-form__submit');
+const resetButton = form.querySelector('.ad-form__reset');
 
 const roomOptions = {
   '1': ['1'],
@@ -74,6 +81,27 @@ const validateTypeAndPrice = () => {
   return priceInput.value >= minPrice;
 };
 
+// Функция, которая блокирует кнопку отправки формы
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+};
+
+// Функция, которая разблокирует кнопку отправки формы
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+};
+
+// Функция, которая возвращает формы и карту в изначальное состояние
+
+const resetForms = () => {
+  form.reset();
+  filters.reset();
+  map.closePopup();
+  setLatLng();
+};
+
 // Валидация полей количества комнат и количества мест
 
 pristine.addValidator(roomNumberSelect, validateRoomAndCapacity, () => {
@@ -103,27 +131,45 @@ pristine.addValidator(typeOfHousingSelect, validateTypeAndPrice, () => {
 roomNumberSelect.addEventListener('change', () => {
   pristine.validate();
 });
+
 capacitySelect.addEventListener('change', () => {
   pristine.validate();
 });
+
 typeOfHousingSelect.addEventListener('change', () => {
   pristine.validate();
 });
+
 priceInput.addEventListener('change', () => {
   pristine.validate();
 });
+
 timeInSelect.addEventListener('change', setTime);
+
 timeOutSelect.addEventListener('change', setTime);
 
-const validateForms = () => {
+resetButton.addEventListener('click', resetForms);
+
+const validateForms = (onSuccess) => {
 
   form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
     const isValid = pristine.validate();
-    if (!isValid) {
-      evt.preventDefault();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(new FormData(evt.target))
+        .then(onSuccess)
+        .catch(() => {
+          showErrorMessage();
+        })
+        .finally(() => {
+          resetForms();
+          unblockSubmitButton();
+        });
     }
   });
 };
 
 
-export { validateForms, setTime, priceInput, typeOfHousingSelect, typeOfHousingOptions};
+export { validateForms, setTime, priceInput, typeOfHousingSelect, typeOfHousingOptions };
