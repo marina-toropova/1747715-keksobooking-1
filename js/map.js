@@ -3,11 +3,11 @@ import { renderAnnouncement } from './popup.js';
 import { getData } from './api.js';
 import { showAlert } from './util.js';
 
-const map = L.map('map-canvas');
-const addressInput = document.querySelector('#address');
-const defaultLatitude = 35.68700;
-const defaultLongitude = 139.753475;
-const setViewLongitude = 139.753490;
+const MAP = L.map('map-canvas');
+const ADDRESS_INPUT = document.querySelector('#address');
+const DEFAULT_LATITUDE = 35.68700;
+const DEFAULT_LONGITUDE = 139.753475;
+const SET_VIEW_LONGITUDE = 139.753490;
 
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
@@ -16,8 +16,8 @@ const mainPinIcon = L.icon({
 
 const mainPinMarker = L.marker(
   {
-    lat: defaultLatitude,
-    lng: defaultLongitude,
+    lat: DEFAULT_LATITUDE,
+    lng: DEFAULT_LONGITUDE,
   },
   {
     draggable: true,
@@ -30,23 +30,23 @@ const commonPinIcon = L.icon({
   iconSize: [40, 40]
 });
 
-addressInput.value = mainPinMarker.getLatLng();
+ADDRESS_INPUT.value = mainPinMarker.getLatLng();
 
 const setLatLng = () => {
   mainPinMarker.setLatLng({
-    lat: defaultLatitude,
-    lng: defaultLongitude,
+    lat: DEFAULT_LATITUDE,
+    lng: DEFAULT_LONGITUDE,
   });
-  addressInput.value = mainPinMarker.getLatLng();
+  ADDRESS_INPUT.value = mainPinMarker.getLatLng();
 };
 
 const loadMap = () => {
-  map.on('load', () => {
+  MAP.on('load', () => {
     enableForm();
   })
     .setView({
-      lat: defaultLatitude,
-      lng: setViewLongitude,
+      lat: DEFAULT_LATITUDE,
+      lng: SET_VIEW_LONGITUDE,
     }, 14);
 
   L.tileLayer(
@@ -54,12 +54,12 @@ const loadMap = () => {
     {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
-  ).addTo(map);
+  ).addTo(MAP);
 
-  mainPinMarker.addTo(map);
+  mainPinMarker.addTo(MAP);
 
   mainPinMarker.on('moveend', (evt) => {
-    addressInput.value = evt.target.getLatLng();
+    ADDRESS_INPUT.value = evt.target.getLatLng();
   });
 };
 
@@ -81,7 +81,7 @@ const loadData = () => {
           .setContent(announcementElement);
 
         marker
-          .addTo(map)
+          .addTo(MAP)
           .bindPopup(popup);
       });
     })
@@ -92,4 +92,4 @@ const loadData = () => {
     });
 };
 
-export { loadMap, loadData, setLatLng, addressInput, map };
+export { loadMap, loadData, setLatLng, MAP };
