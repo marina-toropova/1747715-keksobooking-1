@@ -1,13 +1,16 @@
 import { enableForm, enableFilter, disableFilter } from './form.js';
-import { renderAnnouncement } from './popup.js';
+import { renderAnnouncement, SIMILAR_ANNOUNCEMENTS_COUNT } from './popup.js';
 import { getData } from './api.js';
 import { showAlert } from './util.js';
+import { showByTypeOfHousing } from './filter.js';
 
 const MAP = L.map('map-canvas');
 const ADDRESS_INPUT = document.querySelector('#address');
 const DEFAULT_LATITUDE = 35.68700;
 const DEFAULT_LONGITUDE = 139.753475;
 const SET_VIEW_LONGITUDE = 139.753490;
+
+const typeOfHousingSelect = document.querySelector('[name="housing-type"]');
 
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
@@ -47,7 +50,7 @@ const loadMap = () => {
     .setView({
       lat: DEFAULT_LATITUDE,
       lng: SET_VIEW_LONGITUDE,
-    }, 14);
+    }, 13);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -64,32 +67,51 @@ const loadMap = () => {
 };
 
 const loadData = () => {
+  MAP.eachLayer((layer) => {
+    if (layer instanceof L.LayerGroup && layer !== mainPinMarker) {
+      MAP.removeLayer(layer);
+    }
+  });
+
   getData()
     .then((similarAnnouncements) => {
-      similarAnnouncements.forEach(({ location }, index) => {
+      const filteredAnnouncements = similarAnnouncements
+        .slice()
+        .filter(showByTypeOfHousing)
+        .slice(0, SIMILAR_ANNOUNCEMENTS_COUNT);
+
+      const markersLayer = L.layerGroup();
+
+      filteredAnnouncements.forEach(({ location }, index) => {
         const marker = L.marker({
           lat: location.lat,
           lng: location.lng,
         },
         {
-          commonPinIcon
+          icon: commonPinIcon
         });
 
-        const announcementElements = renderAnnouncement(similarAnnouncements);
+        const announcementElements = renderAnnouncement(filteredAnnouncements);
         const announcementElement = announcementElements[index];
         const popup = L.popup()
           .setContent(announcementElement);
 
         marker
-          .addTo(MAP)
+          .addTo(markersLayer)
           .bindPopup(popup);
       });
+
+      markersLayer.addTo(MAP);
     })
-    .then(enableFilter())
+    .then(enableFilter)
     .catch((err) => {
       disableFilter();
       showAlert(err.message);
     });
 };
+
+typeOfHousingSelect.addEventListener('change', () => {
+  loadData();
+});
 
 export { loadMap, loadData, setLatLng, MAP };

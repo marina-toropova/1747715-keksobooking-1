@@ -1,3 +1,4 @@
+const SIMILAR_ANNOUNCEMENTS_COUNT = 10;
 const propertyType = {
   flat: 'flat',
   bungalow: 'bungalow',
@@ -63,24 +64,26 @@ const getProperyType = (type) => {
 const renderAnnouncement = (similarAnnouncements) => {
   const announcements = [];
 
-  similarAnnouncements.forEach(({ author, offer }) => {
-    const similarAnnouncement = document.querySelector('#card').content.querySelector('.popup');
-    const announcementElement = similarAnnouncement.cloneNode(true);
-    announcementElement.querySelector('.popup__title').textContent = offer.title;
-    announcementElement.querySelector('.popup__text--address').textContent = offer.address;
-    announcementElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
-    announcementElement.querySelector('.popup__type').textContent = getProperyType(offer.type);
-    announcementElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
-    announcementElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
-    getFeatures(offer.features, announcementElement);
-    announcementElement.querySelector('.popup__description').textContent = offer.description;
-    getPhotos(offer.photos, announcementElement);
-    announcementElement.querySelector('.popup__avatar').src = author.avatar;
+  similarAnnouncements
+    .slice(0, SIMILAR_ANNOUNCEMENTS_COUNT)
+    .forEach(({ author, offer }) => {
+      const similarAnnouncement = document.querySelector('#card').content.querySelector('.popup');
+      const announcementElement = similarAnnouncement.cloneNode(true);
+      announcementElement.querySelector('.popup__title').textContent = offer.title;
+      announcementElement.querySelector('.popup__text--address').textContent = offer.address;
+      announcementElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
+      announcementElement.querySelector('.popup__type').textContent = getProperyType(offer.type);
+      announcementElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
+      announcementElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
+      getFeatures(offer.features, announcementElement);
+      announcementElement.querySelector('.popup__description').textContent = offer.description;
+      getPhotos(offer.photos, announcementElement);
+      announcementElement.querySelector('.popup__avatar').src = author.avatar;
 
-    announcements.push(announcementElement);
-  });
+      announcements.push(announcementElement);
+    });
 
   return announcements;
 };
 
-export { renderAnnouncement };
+export { renderAnnouncement, SIMILAR_ANNOUNCEMENTS_COUNT };
