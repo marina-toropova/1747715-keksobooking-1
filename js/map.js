@@ -2,15 +2,13 @@ import { enableForm, enableFilter, disableFilter } from './form.js';
 import { renderAnnouncement, SIMILAR_ANNOUNCEMENTS_COUNT } from './popup.js';
 import { getData } from './api.js';
 import { showAlert } from './util.js';
-import { showByTypeOfHousing } from './filter.js';
+import { typeOfHousingSelect, showByTypeOfHousing, priceSelect, showByPrice } from './filter.js';
 
 const MAP = L.map('map-canvas');
 const ADDRESS_INPUT = document.querySelector('#address');
 const DEFAULT_LATITUDE = 35.68700;
 const DEFAULT_LONGITUDE = 139.753475;
 const SET_VIEW_LONGITUDE = 139.753490;
-
-const typeOfHousingSelect = document.querySelector('[name="housing-type"]');
 
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
@@ -78,6 +76,7 @@ const loadData = () => {
       const filteredAnnouncements = similarAnnouncements
         .slice()
         .filter(showByTypeOfHousing)
+        .filter(showByPrice)
         .slice(0, SIMILAR_ANNOUNCEMENTS_COUNT);
 
       const markersLayer = L.layerGroup();
@@ -111,6 +110,10 @@ const loadData = () => {
 };
 
 typeOfHousingSelect.addEventListener('change', () => {
+  loadData();
+});
+
+priceSelect.addEventListener('change', () => {
   loadData();
 });
 
