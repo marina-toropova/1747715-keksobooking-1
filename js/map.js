@@ -2,7 +2,7 @@ import { enableForm, enableFilter, disableFilter } from './form.js';
 import { renderAnnouncement, SIMILAR_ANNOUNCEMENTS_COUNT } from './popup.js';
 import { getData } from './api.js';
 import { showAlert } from './util.js';
-import { typeOfHousingSelect, showByTypeOfHousing, priceSelect, showByPrice, roomsCountSelect, showByRoomsCount } from './filter.js';
+import { typeOfHousingSelect, showByTypeOfHousing, priceSelect, showByPrice, roomsCountSelect, showByRoomsCount, guestsCountSelect, showByGuestsCount } from './filter.js';
 
 const MAP = L.map('map-canvas');
 const ADDRESS_INPUT = document.querySelector('#address');
@@ -78,6 +78,7 @@ const loadData = () => {
         .filter(showByTypeOfHousing)
         .filter(showByPrice)
         .filter(showByRoomsCount)
+        .filter(showByGuestsCount)
         .slice(0, SIMILAR_ANNOUNCEMENTS_COUNT);
 
       const markersLayer = L.layerGroup();
@@ -119,6 +120,10 @@ priceSelect.addEventListener('change', () => {
 });
 
 roomsCountSelect.addEventListener('change', () => {
+  loadData();
+});
+
+guestsCountSelect.addEventListener('change', () => {
   loadData();
 });
 

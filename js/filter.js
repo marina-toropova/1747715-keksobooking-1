@@ -14,6 +14,7 @@ const featureConditionerInput = document.querySelector('[value="conditioner"]');
 const typeOfHousingSelect = document.querySelector('[name="housing-type"]');
 const priceSelect = document.querySelector('[name="housing-price"]');
 const roomsCountSelect = document.querySelector('[name="housing-rooms"]');
+const guestsCountSelect = document.querySelector('[name="housing-guests"]');
 
 const DEFAULT_OPTION_VALUE = 'any';
 
@@ -47,4 +48,10 @@ const showByRoomsCount = ({offer}) => {
   } return offer.rooms === +roomsCountSelect.value;
 };
 
-export { showByTypeOfHousing, showByPrice, typeOfHousingSelect, priceSelect, showByRoomsCount, roomsCountSelect };
+const showByGuestsCount = ({offer}) => {
+  if (guestsCountSelect.value === DEFAULT_OPTION_VALUE) {
+    return true;
+  } return offer.guests === +guestsCountSelect.value;
+};
+
+export { showByTypeOfHousing, showByPrice, typeOfHousingSelect, priceSelect, showByRoomsCount, roomsCountSelect, guestsCountSelect, showByGuestsCount};
