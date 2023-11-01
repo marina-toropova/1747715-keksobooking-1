@@ -1,7 +1,7 @@
 import { enableForm, enableFilter, disableFilter } from './form.js';
 import { renderAnnouncement, SIMILAR_ANNOUNCEMENTS_COUNT } from './popup.js';
 import { getData } from './api.js';
-import { showAlert } from './util.js';
+import { showAlert, debounce } from './util.js';
 import { typeOfHousingSelect, showByTypeOfHousing, priceSelect, showByPrice, roomsCountSelect, showByRoomsCount, guestsCountSelect, showByGuestsCount, mapFeaturesFieldset, showByFeatures } from './filter.js';
 
 const MAP = L.map('map-canvas');
@@ -9,6 +9,7 @@ const ADDRESS_INPUT = document.querySelector('#address');
 const DEFAULT_LATITUDE = 35.69100;
 const DEFAULT_LONGITUDE = 139.753475;
 const SET_VIEW_LONGITUDE = 139.753490;
+const debouncedLoadData = debounce(loadData, 500);
 
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
@@ -64,7 +65,7 @@ const loadMap = () => {
   });
 };
 
-const loadData = () => {
+function loadData () {
   MAP.eachLayer((layer) => {
     if (layer instanceof L.LayerGroup && layer !== mainPinMarker) {
       MAP.removeLayer(layer);
@@ -110,27 +111,19 @@ const loadData = () => {
       disableFilter();
       showAlert(err.message);
     });
-};
+}
 
-typeOfHousingSelect.addEventListener('change', () => {
-  loadData();
-});
+typeOfHousingSelect.addEventListener('change', debouncedLoadData);
 
-priceSelect.addEventListener('change', () => {
-  loadData();
-});
+priceSelect.addEventListener('change', debouncedLoadData);
 
-roomsCountSelect.addEventListener('change', () => {
-  loadData();
-});
+roomsCountSelect.addEventListener('change', debouncedLoadData);
 
-guestsCountSelect.addEventListener('change', () => {
-  loadData();
-});
+guestsCountSelect.addEventListener('change', debouncedLoadData);
 
 mapFeaturesFieldset.addEventListener('change', (event) => {
   if (event.target.matches('input[type="checkbox"]')) {
-    loadData();
+    debouncedLoadData();
   }
 });
 

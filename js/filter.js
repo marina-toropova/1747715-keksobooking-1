@@ -1,4 +1,4 @@
-import { getAnnouncementRank } from './util.js';
+import { getFeatureRank } from './util.js';
 
 const typeOfHousingSelect = document.querySelector('[name="housing-type"]');
 const priceSelect = document.querySelector('[name="housing-price"]');
@@ -9,9 +9,17 @@ const mapFeaturesFieldset = document.querySelector('.map__features');
 const DEFAULT_OPTION_VALUE = 'any';
 
 const priceRange = {
-  'middle': {min: 10000, max: 50000},
-  'low': {max: 10000},
-  'high': {min: 50000}
+
+  'middle': {
+    min: 10000,
+    max: 50000
+  },
+  'low': {
+    max: 10000
+  },
+  'high': {
+    min: 50000
+  }
 };
 
 const showByTypeOfHousing = ({offer}) => {
@@ -45,8 +53,8 @@ const showByGuestsCount = ({offer}) => {
 };
 
 const showByFeatures = (announcementA, announcementB) => {
-  const rankA = getAnnouncementRank(announcementA);
-  const rankB = getAnnouncementRank(announcementB);
+  const rankA = getFeatureRank(announcementA);
+  const rankB = getFeatureRank(announcementB);
 
   return rankB - rankA;
 };
