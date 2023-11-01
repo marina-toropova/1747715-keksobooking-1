@@ -1,13 +1,14 @@
 import { enableForm, enableFilter, disableFilter } from './form.js';
-import { renderAnnouncement } from './popup.js';
+import { renderAnnouncement, SIMILAR_ANNOUNCEMENTS_COUNT } from './popup.js';
 import { getData } from './api.js';
-import { showAlert } from './util.js';
+import { showAlert, debounce } from './util.js';
+import { typeOfHousingSelect, showByTypeOfHousing, priceSelect, showByPrice, roomsCountSelect, showByRoomsCount, guestsCountSelect, showByGuestsCount, mapFeaturesFieldset, showByFeatures } from './filter.js';
 
-const map = L.map('map-canvas');
-const addressInput = document.querySelector('#address');
-const defaultLatitude = 35.68700;
-const defaultLongitude = 139.753475;
-const setViewLongitude = 139.753490;
+const MAP = L.map('map-canvas');
+const ADDRESS_INPUT = document.querySelector('#address');
+const DEFAULT_LATITUDE = 35.69100;
+const DEFAULT_LONGITUDE = 139.753475;
+const SET_VIEW_LONGITUDE = 139.753490;
 
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
@@ -16,8 +17,8 @@ const mainPinIcon = L.icon({
 
 const mainPinMarker = L.marker(
   {
-    lat: defaultLatitude,
-    lng: defaultLongitude,
+    lat: DEFAULT_LATITUDE,
+    lng: DEFAULT_LONGITUDE,
   },
   {
     draggable: true,
@@ -30,66 +31,101 @@ const commonPinIcon = L.icon({
   iconSize: [40, 40]
 });
 
-addressInput.value = mainPinMarker.getLatLng();
+ADDRESS_INPUT.value = mainPinMarker.getLatLng();
 
 const setLatLng = () => {
   mainPinMarker.setLatLng({
-    lat: defaultLatitude,
-    lng: defaultLongitude,
+    lat: DEFAULT_LATITUDE,
+    lng: DEFAULT_LONGITUDE,
   });
-  addressInput.value = mainPinMarker.getLatLng();
+  ADDRESS_INPUT.value = mainPinMarker.getLatLng();
 };
 
 const loadMap = () => {
-  map.on('load', () => {
+  MAP.on('load', () => {
     enableForm();
   })
     .setView({
-      lat: defaultLatitude,
-      lng: setViewLongitude,
-    }, 14);
+      lat: DEFAULT_LATITUDE,
+      lng: SET_VIEW_LONGITUDE,
+    }, 13);
 
   L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
-  ).addTo(map);
+  ).addTo(MAP);
 
-  mainPinMarker.addTo(map);
+  mainPinMarker.addTo(MAP);
 
   mainPinMarker.on('moveend', (evt) => {
-    addressInput.value = evt.target.getLatLng();
+    ADDRESS_INPUT.value = evt.target.getLatLng();
   });
 };
 
 const loadData = () => {
+  MAP.eachLayer((layer) => {
+    if (layer instanceof L.LayerGroup && layer !== mainPinMarker) {
+      MAP.removeLayer(layer);
+    }
+  });
+
   getData()
     .then((similarAnnouncements) => {
-      similarAnnouncements.forEach(({ location }, index) => {
+      const filteredAnnouncements = similarAnnouncements
+        .slice()
+        .filter(showByTypeOfHousing)
+        .filter(showByPrice)
+        .filter(showByRoomsCount)
+        .filter(showByGuestsCount)
+        .sort(showByFeatures)
+        .slice(0, SIMILAR_ANNOUNCEMENTS_COUNT);
+
+      const markersLayer = L.layerGroup();
+
+      filteredAnnouncements.forEach(({ location }, index) => {
         const marker = L.marker({
           lat: location.lat,
           lng: location.lng,
         },
         {
-          commonPinIcon
+          icon: commonPinIcon
         });
 
-        const announcementElements = renderAnnouncement(similarAnnouncements);
+        const announcementElements = renderAnnouncement(filteredAnnouncements);
         const announcementElement = announcementElements[index];
         const popup = L.popup()
           .setContent(announcementElement);
 
         marker
-          .addTo(map)
+          .addTo(markersLayer)
           .bindPopup(popup);
       });
+
+      markersLayer.addTo(MAP);
     })
-    .then(enableFilter())
+    .then(enableFilter)
     .catch((err) => {
       disableFilter();
       showAlert(err.message);
     });
 };
 
-export { loadMap, loadData, setLatLng, addressInput, map };
+const debouncedLoadData = debounce(loadData, 500);
+
+typeOfHousingSelect.addEventListener('change', debouncedLoadData);
+
+priceSelect.addEventListener('change', debouncedLoadData);
+
+roomsCountSelect.addEventListener('change', debouncedLoadData);
+
+guestsCountSelect.addEventListener('change', debouncedLoadData);
+
+mapFeaturesFieldset.addEventListener('change', (event) => {
+  if (event.target.matches('input[type="checkbox"]')) {
+    debouncedLoadData();
+  }
+});
+
+export { loadMap, loadData, setLatLng, MAP };

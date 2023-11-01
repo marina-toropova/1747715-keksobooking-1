@@ -1,5 +1,7 @@
 const ALERT_SHOW_TIME = 5000;
 
+const featuresInputs = document.querySelectorAll('[name="features"]');
+
 // Функция, которая создает сообщение о неуспешной отправке формы
 
 const showAlert = (message) => {
@@ -27,4 +29,43 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export { showAlert };
+// Функция, которая сортирует массив с преимуществами
+
+const getFeatureRank = ({ offer }) => {
+
+  let rank = 0;
+
+  if (offer.features) {
+    offer.features.forEach((feature) => {
+      featuresInputs.forEach((featureInput) => {
+        if (feature === featureInput.value && featureInput.checked) {
+          rank += 1;
+        }
+      });
+    });
+  }
+
+  return rank;
+};
+
+// Функция устранения дребезга
+
+const debounce = (callback, timeoutDelay = 500) => {
+  // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
+  // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать
+  let timeoutId;
+
+  return (...rest) => {
+    // Перед каждым новым вызовом удаляем предыдущий таймаут,
+    // чтобы они не накапливались
+    clearTimeout(timeoutId);
+
+    // Затем устанавливаем новый таймаут с вызовом колбэка на ту же задержку
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+
+    // Таким образом цикл «поставить таймаут - удалить таймаут» будет выполняться,
+    // пока действие совершается чаще, чем переданная задержка timeoutDelay
+  };
+};
+
+export { showAlert, getFeatureRank, debounce };
