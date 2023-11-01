@@ -9,7 +9,6 @@ const ADDRESS_INPUT = document.querySelector('#address');
 const DEFAULT_LATITUDE = 35.69100;
 const DEFAULT_LONGITUDE = 139.753475;
 const SET_VIEW_LONGITUDE = 139.753490;
-const debouncedLoadData = debounce(loadData, 500);
 
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
@@ -65,7 +64,7 @@ const loadMap = () => {
   });
 };
 
-function loadData () {
+const loadData = () => {
   MAP.eachLayer((layer) => {
     if (layer instanceof L.LayerGroup && layer !== mainPinMarker) {
       MAP.removeLayer(layer);
@@ -111,7 +110,9 @@ function loadData () {
       disableFilter();
       showAlert(err.message);
     });
-}
+};
+
+const debouncedLoadData = debounce(loadData, 500);
 
 typeOfHousingSelect.addEventListener('change', debouncedLoadData);
 
