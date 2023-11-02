@@ -1,6 +1,7 @@
 import { showErrorMessage } from './messages.js';
 import { sendData } from './api.js';
-import { setLatLng, MAP } from './map.js';
+import { setLatLng, map, loadData } from './map.js';
+import { clearAvatarImage, clearHousingImage } from './load-image.js';
 
 const form = document.querySelector('.ad-form');
 const filters = document.querySelector('.map__filters');
@@ -97,8 +98,11 @@ const unblockSubmitButton = () => {
 
 const resetForms = () => {
   form.reset();
+  clearAvatarImage();
+  clearHousingImage();
   filters.reset();
-  MAP.closePopup();
+  map.closePopup();
+  loadData();
   setLatLng();
 };
 

@@ -2,13 +2,15 @@ import { enableForm, enableFilter, disableFilter } from './form.js';
 import { renderAnnouncement, SIMILAR_ANNOUNCEMENTS_COUNT } from './popup.js';
 import { getData } from './api.js';
 import { showAlert, debounce } from './util.js';
-import { typeOfHousingSelect, showByTypeOfHousing, priceSelect, showByPrice, roomsCountSelect, showByRoomsCount, guestsCountSelect, showByGuestsCount, mapFeaturesFieldset, showByFeatures } from './filter.js';
+import { showByTypeOfHousing, showByPrice, showByRoomsCount, showByGuestsCount, showByFeatures } from './filter.js';
 
-const MAP = L.map('map-canvas');
-const ADDRESS_INPUT = document.querySelector('#address');
 const DEFAULT_LATITUDE = 35.69100;
 const DEFAULT_LONGITUDE = 139.753475;
 const SET_VIEW_LONGITUDE = 139.753490;
+
+const map = L.map('map-canvas');
+const addressInput = document.querySelector('#address');
+const mapForm = document.querySelector('.map__filters');
 
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
@@ -31,18 +33,18 @@ const commonPinIcon = L.icon({
   iconSize: [40, 40]
 });
 
-ADDRESS_INPUT.value = mainPinMarker.getLatLng();
+addressInput.value = mainPinMarker.getLatLng();
 
 const setLatLng = () => {
   mainPinMarker.setLatLng({
     lat: DEFAULT_LATITUDE,
     lng: DEFAULT_LONGITUDE,
   });
-  ADDRESS_INPUT.value = mainPinMarker.getLatLng();
+  addressInput.value = mainPinMarker.getLatLng();
 };
 
 const loadMap = () => {
-  MAP.on('load', () => {
+  map.on('load', () => {
     enableForm();
   })
     .setView({
@@ -55,19 +57,19 @@ const loadMap = () => {
     {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     },
-  ).addTo(MAP);
+  ).addTo(map);
 
-  mainPinMarker.addTo(MAP);
+  mainPinMarker.addTo(map);
 
   mainPinMarker.on('moveend', (evt) => {
-    ADDRESS_INPUT.value = evt.target.getLatLng();
+    addressInput.value = evt.target.getLatLng();
   });
 };
 
 const loadData = () => {
-  MAP.eachLayer((layer) => {
+  map.eachLayer((layer) => {
     if (layer instanceof L.LayerGroup && layer !== mainPinMarker) {
-      MAP.removeLayer(layer);
+      map.removeLayer(layer);
     }
   });
 
@@ -103,7 +105,7 @@ const loadData = () => {
           .bindPopup(popup);
       });
 
-      markersLayer.addTo(MAP);
+      markersLayer.addTo(map);
     })
     .then(enableFilter)
     .catch((err) => {
@@ -112,20 +114,12 @@ const loadData = () => {
     });
 };
 
-const debouncedLoadData = debounce(loadData, 500);
+const debouncedLoadData = debounce(loadData);
 
-typeOfHousingSelect.addEventListener('change', debouncedLoadData);
-
-priceSelect.addEventListener('change', debouncedLoadData);
-
-roomsCountSelect.addEventListener('change', debouncedLoadData);
-
-guestsCountSelect.addEventListener('change', debouncedLoadData);
-
-mapFeaturesFieldset.addEventListener('change', (event) => {
-  if (event.target.matches('input[type="checkbox"]')) {
+mapForm.addEventListener('change', (event) => {
+  if (event.target.matches('SELECT, INPUT')) {
     debouncedLoadData();
   }
 });
 
-export { loadMap, loadData, setLatLng, MAP };
+export { loadMap, loadData, setLatLng, map };

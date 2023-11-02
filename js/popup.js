@@ -7,6 +7,8 @@ const propertyType = {
   hotel: 'hotel'
 };
 
+const similarAnnouncement = document.querySelector('#card').content.querySelector('.popup');
+
 // Функция, которая генерирует список всех доступных удобств в объявлении
 
 const getFeatures = (features = [], announcementElement) => {
@@ -67,7 +69,7 @@ const renderAnnouncement = (similarAnnouncements) => {
   similarAnnouncements
     .slice(0, SIMILAR_ANNOUNCEMENTS_COUNT)
     .forEach(({ author, offer }) => {
-      const similarAnnouncement = document.querySelector('#card').content.querySelector('.popup');
+
       const announcementElement = similarAnnouncement.cloneNode(true);
       announcementElement.querySelector('.popup__title').textContent = offer.title;
       announcementElement.querySelector('.popup__text--address').textContent = offer.address;

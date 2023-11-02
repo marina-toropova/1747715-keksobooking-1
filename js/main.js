@@ -1,5 +1,6 @@
 import './util.js';
 import './popup.js';
+import './load-image.js';
 import { disableForm, disableFilter } from './form.js';
 import { validateForms, setTime } from './validator.js';
 import { loadMap, loadData } from './map.js';
@@ -12,5 +13,3 @@ setTime();
 loadMap();
 loadData();
 validateForms(showSuccessMessage);
-
-

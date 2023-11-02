@@ -1,11 +1,5 @@
 import { getFeatureRank } from './util.js';
 
-const typeOfHousingSelect = document.querySelector('[name="housing-type"]');
-const priceSelect = document.querySelector('[name="housing-price"]');
-const roomsCountSelect = document.querySelector('[name="housing-rooms"]');
-const guestsCountSelect = document.querySelector('[name="housing-guests"]');
-const mapFeaturesFieldset = document.querySelector('.map__features');
-
 const DEFAULT_OPTION_VALUE = 'any';
 
 const priceRange = {
@@ -22,11 +16,13 @@ const priceRange = {
   }
 };
 
-const showByTypeOfHousing = ({offer}) => {
-  if (typeOfHousingSelect.value === DEFAULT_OPTION_VALUE) {
-    return true;
-  } return offer.type === typeOfHousingSelect.value;
-};
+const typeOfHousingSelect = document.querySelector('[name="housing-type"]');
+const priceSelect = document.querySelector('[name="housing-price"]');
+const roomsCountSelect = document.querySelector('[name="housing-rooms"]');
+const guestsCountSelect = document.querySelector('[name="housing-guests"]');
+const mapFeaturesFieldset = document.querySelector('.map__features');
+
+const showByTypeOfHousing = ({offer}) => typeOfHousingSelect.value === DEFAULT_OPTION_VALUE ? true : offer.type === typeOfHousingSelect.value;
 
 const showByPrice = ({offer}) => {
   const priceOption = priceSelect.value;
