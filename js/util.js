@@ -1,4 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
+const TIME_OUT_DELAY = 500;
 
 const featuresInputs = document.querySelectorAll('[name="features"]');
 
@@ -50,7 +51,7 @@ const getFeatureRank = ({ offer }) => {
 
 // Функция устранения дребезга
 
-const debounce = (callback, timeoutDelay = 500) => {
+const debounce = (callback, timeoutDelay = TIME_OUT_DELAY) => {
   // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
   // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать
   let timeoutId;
