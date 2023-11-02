@@ -1,6 +1,6 @@
 import { showErrorMessage } from './messages.js';
 import { sendData } from './api.js';
-import { setLatLng, map } from './map.js';
+import { setLatLng, map, loadData } from './map.js';
 import { clearAvatarImage, clearHousingImage } from './load-image.js';
 
 const form = document.querySelector('.ad-form');
@@ -102,6 +102,7 @@ const resetForms = () => {
   clearHousingImage();
   filters.reset();
   map.closePopup();
+  loadData();
   setLatLng();
 };
 

@@ -2,7 +2,7 @@ import { enableForm, enableFilter, disableFilter } from './form.js';
 import { renderAnnouncement, SIMILAR_ANNOUNCEMENTS_COUNT } from './popup.js';
 import { getData } from './api.js';
 import { showAlert, debounce } from './util.js';
-import { typeOfHousingSelect, showByTypeOfHousing, priceSelect, showByPrice, roomsCountSelect, showByRoomsCount, guestsCountSelect, showByGuestsCount, mapFeaturesFieldset, showByFeatures } from './filter.js';
+import { showByTypeOfHousing, showByPrice, showByRoomsCount, showByGuestsCount, showByFeatures } from './filter.js';
 
 const DEFAULT_LATITUDE = 35.69100;
 const DEFAULT_LONGITUDE = 139.753475;
