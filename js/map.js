@@ -8,13 +8,18 @@ const DEFAULT_LATITUDE = 35.69126;
 const DEFAULT_LONGITUDE = 139.75347;
 const SET_VIEW_LONGITUDE = 139.75349;
 
+const IconSizes = {
+  mainPinIcon: [52, 52],
+  commonPinIcon: [40, 40]
+};
+
 const map = L.map('map-canvas');
 const addressInput = document.querySelector('#address');
 const mapForm = document.querySelector('.map__filters');
 
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
-  iconSize: [52, 52]
+  iconSize: IconSizes.mainPinIcon
 });
 
 const mainPinMarker = L.marker(
@@ -30,7 +35,7 @@ const mainPinMarker = L.marker(
 
 const commonPinIcon = L.icon({
   iconUrl: '../img/pin.svg',
-  iconSize: [40, 40]
+  iconSize: IconSizes.commonPinIcon
 });
 
 const roundLatLng = () => {
