@@ -7,10 +7,11 @@ import { showByTypeOfHousing, showByPrice, showByRoomsCount, showByGuestsCount, 
 const DEFAULT_LATITUDE = 35.69126;
 const DEFAULT_LONGITUDE = 139.75347;
 const SET_VIEW_LONGITUDE = 139.75349;
+const SYMBOLS_AFTER_POINT = 5;
 
 const IconSizes = {
-  mainPinIcon: [52, 52],
-  commonPinIcon: [40, 40]
+  MAIN_ICON_SIZE: [52, 52],
+  COMMON_ICON_SIZE: [40, 40]
 };
 
 const map = L.map('map-canvas');
@@ -19,7 +20,7 @@ const mapForm = document.querySelector('.map__filters');
 
 const mainPinIcon = L.icon({
   iconUrl: '../img/main-pin.svg',
-  iconSize: IconSizes.mainPinIcon
+  iconSize: IconSizes.MAIN_ICON_SIZE
 });
 
 const mainPinMarker = L.marker(
@@ -35,14 +36,14 @@ const mainPinMarker = L.marker(
 
 const commonPinIcon = L.icon({
   iconUrl: '../img/pin.svg',
-  iconSize: IconSizes.commonPinIcon
+  iconSize: IconSizes.COMMON_ICON_SIZE
 });
 
 const roundLatLng = () => {
-  const mainPinMarkerLatLng = mainPinMarker.getLatLng();
-  const mainPinMarkerLat = mainPinMarkerLatLng.lat.toFixed(5);
-  const mainPinMarkerLng = mainPinMarkerLatLng.lng.toFixed(5);
-  const addressInputValue = `LatLng(${mainPinMarkerLat}, ${mainPinMarkerLng})`;
+  const geolocation = mainPinMarker.getLatLng();
+  const lat = geolocation.lat.toFixed(SYMBOLS_AFTER_POINT);
+  const lng = geolocation.lng.toFixed(SYMBOLS_AFTER_POINT);
+  const addressInputValue = `LatLng(${lat}, ${lng})`;
   addressInput.value = addressInputValue;
   return addressInput.value;
 };
