@@ -4,9 +4,9 @@ import { getData } from './api.js';
 import { showAlert, debounce } from './util.js';
 import { showByTypeOfHousing, showByPrice, showByRoomsCount, showByGuestsCount, showByFeatures } from './filter.js';
 
-const DEFAULT_LATITUDE = 35.69100;
-const DEFAULT_LONGITUDE = 139.753475;
-const SET_VIEW_LONGITUDE = 139.753490;
+const DEFAULT_LATITUDE = 35.69126;
+const DEFAULT_LONGITUDE = 139.75347;
+const SET_VIEW_LONGITUDE = 139.75349;
 
 const map = L.map('map-canvas');
 const addressInput = document.querySelector('#address');
@@ -33,14 +33,23 @@ const commonPinIcon = L.icon({
   iconSize: [40, 40]
 });
 
-addressInput.value = mainPinMarker.getLatLng();
+const roundLatLng = () => {
+  const mainPinMarkerLatLng = mainPinMarker.getLatLng();
+  const mainPinMarkerLat = mainPinMarkerLatLng.lat.toFixed(5);
+  const mainPinMarkerLng = mainPinMarkerLatLng.lng.toFixed(5);
+  const addressInputValue = `LatLng(${mainPinMarkerLat}, ${mainPinMarkerLng})`;
+  addressInput.value = addressInputValue;
+  return addressInput.value;
+};
+
+addressInput.value = roundLatLng();
 
 const setLatLng = () => {
   mainPinMarker.setLatLng({
     lat: DEFAULT_LATITUDE,
     lng: DEFAULT_LONGITUDE,
   });
-  addressInput.value = mainPinMarker.getLatLng();
+  addressInput.value = roundLatLng();
 };
 
 const loadMap = () => {
@@ -61,8 +70,9 @@ const loadMap = () => {
 
   mainPinMarker.addTo(map);
 
-  mainPinMarker.on('moveend', (evt) => {
-    addressInput.value = evt.target.getLatLng();
+  mainPinMarker.on('moveend', () => {
+
+    addressInput.value = roundLatLng();
   });
 };
 
